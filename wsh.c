@@ -7,12 +7,8 @@
 #include <unistd.h>
 
 #include <sys/types.h>
-#include <sys/wait.h>
 
-/* The array below will hold the arguments: args[0] is the command. */
-static char* args[512];
-pid_t pid;
-int command_pipe[2];
+#include "util.h"
 
 #define READ  0
 #define WRITE 1
@@ -37,7 +33,7 @@ static int command(int input, int first, int last)
 
 	/* Invoke pipe */
 	pipe( fd );
-	pid = fork();
+	pid_t pid = fork();
 
 	/*
 	 SCHEME:
@@ -74,16 +70,6 @@ static int command(int input, int first, int last)
 	return fd[READ];
 }
 
-/* Final cleanup, 'wait' for processes to terminate.
- *  n : Number of times 'command' was invoked.
- */
-static void cleanup(int n)
-{
-	int i;
-	for (i = 0; i < n; ++i)
-		wait(NULL);
-}
-
 static int run(char* cmd, int input, int first, int last);
 static char line[1024];
 static int n = 0; /* number of calls to 'command' */
@@ -92,7 +78,7 @@ int main()
 {
 	while (1) {
 		/* Print the command prompt */
-		printf("$> ");
+		printf("wsh: ");
 		fflush(NULL);
 
 		/* Read a command line */
@@ -115,17 +101,15 @@ int main()
 			first = 0;
 		}
 		input = run(cmd, input, first, 1);
-		cleanup(n);
+		cleanUp(n);
 		n = 0;
 	}
 	return 0;
 }
 
-static void split(char* cmd);
-
 static int run(char* cmd, int input, int first, int last)
 {
-	split(cmd);
+	splitLine(cmd);
 	if (args[0] != NULL) {
 		if (strcmp(args[0], "exit") == 0)
 			exit(0);
@@ -133,34 +117,4 @@ static int run(char* cmd, int input, int first, int last)
 		return command(input, first, last);
 	}
 	return 0;
-}
-
-static char* skipwhite(char* s)
-{
-	while (isspace(*s)) ++s;
-	return s;
-}
-
-static void split(char* cmd)
-{
-	cmd = skipwhite(cmd);
-	char* next = strchr(cmd, ' ');
-	int i = 0;
-
-	while(next != NULL) {
-		next[0] = '\0';
-		args[i] = cmd;
-		++i;
-		cmd = skipwhite(next + 1);
-		next = strchr(cmd, ' ');
-	}
-
-	if (cmd[0] != '\0') {
-		args[i] = cmd;
-		next = strchr(cmd, '\n');
-		next[0] = '\0';
-		++i;
-	}
-
-	args[i] = NULL;
 }
