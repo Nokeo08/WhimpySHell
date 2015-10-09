@@ -1,0 +1,15 @@
+WhimpySHell ReadMe
+
+Source Files
+  wsh.c
+    Contains main loop that reads in and breaks up the commands.
+  util.c
+    Contains functions to
+      breakup a command string and load it into a string array
+      trim leading white space from a command
+      preform waits for processes running
+  execution.c
+    Contains functions to
+      deal with empty commands and call inbuilt commands
+      call system commands and pipe if need be
+      perform inbuilt functions

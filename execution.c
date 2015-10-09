@@ -1,3 +1,16 @@
+/*
+    Funtions
+      builtins_Size - return size of array containing signitures to the builtin
+                      functions
+      shellCD - performs the cd command
+      waitBG - waits for background job to finish (I did not have time to
+               implement this feature.)
+      shellHelp - prints in built command list. (I kept forgetting the commands)
+      shellExit - returns 0 to signal that the shell shold exit
+      shell_exe - deals with empty commands and calls in built ones
+      sys_exe - calls system commands and pipes them if necessary 
+*/
+
 #include <unistd.h> /* chdir, pipe, fork, dup2, STDOUT_FILENO, STDIN_FILENO, execvp, _exit */
 #include <stdlib.h> /* EXIT_FAILURE */
 #include <stdio.h>  /* perror, printf */

@@ -1,3 +1,10 @@
+/*
+    Funtions
+      splitLine - splits the command up and load it into the args array
+      trimLeadingWhiteSpace - trims leading white space from the given string
+			cleanUp - performs the wait form processes that are running
+*/
+
 #include <string.h> /* strchr */
 #include <ctype.h> /* isspace */
 #include <sys/wait.h> /* wait */
