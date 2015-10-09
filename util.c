@@ -14,7 +14,7 @@ void splitLine(char* cmd)
 	while(next != NULL) {
 		next[0] = '\0';
 		args[i] = cmd;
-		++i;
+		i++;
 		cmd = trimLeadingWhiteSpace(next + 1);
 		next = strchr(cmd, ' ');
 	}
@@ -23,7 +23,7 @@ void splitLine(char* cmd)
 		args[i] = cmd;
 		next = strchr(cmd, '\n');
 		next[0] = '\0';
-		++i;
+		i++;
 	}
 
 	args[i] = NULL;

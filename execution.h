@@ -4,17 +4,21 @@
 #define READ  0
 #define WRITE 1
 
-char line[1024];
-int n; /* number of calls to 'command' */
+#define true 1
+#define false 0
 
-/*
-  Function Declarations for builtin shell commands:
- */
+#define LINE_BUFFER 256
+
+char line[LINE_BUFFER];
+int timesCommandWasCalled; /* number of calls to 'command' */
+
+
 int shellCD(char **args);
-int waitForBackground(char **args);
+int waitBG(char **args);
+int shellHelp(char **args);
 int shellExit(char **args);
 
-int run(char* cmd, int input, int first, int last);
-int command(int input, int first, int last);
+int shell_exe(char* cmd, int input, int first, int last);
+int sys_exe(int input, int first, int last);
 
 #endif

@@ -6,7 +6,7 @@
 
 int main()
 {
-  n=0;
+  timesCommandWasCalled=0;
 
   int advance = 1;
 
@@ -16,7 +16,7 @@ int main()
 		fflush(NULL);
 
 		/* Read a command line */
-		if (!fgets(line, 1024, stdin))
+		if (!fgets(line, LINE_BUFFER, stdin))
 			return 0;
 
 		int input = 0;
@@ -28,15 +28,15 @@ int main()
 		while (next != NULL) {
 			/* 'next' points to '|' */
 			*next = '\0';
-			input = run(cmd, input, first, 0);
+			input = shell_exe(cmd, input, first, 0);
 
 			cmd = next + 1;
 			next = strchr(cmd, '|'); /* Find next '|' */
 			first = 0;
 		}
-		advance = run(cmd, input, first, 1);
-		cleanUp(n);
-		n = 0;
+		advance = shell_exe(cmd, input, first, 1);
+		cleanUp(timesCommandWasCalled);
+		timesCommandWasCalled = 0;
 	}
 	return 0;
 }
